@@ -170,3 +170,33 @@ Pada client, dilakukan command berikut untuk pengecekan apakah reverse domain su
 host -t PTR 10.10.2.4
 ```
 ![No4](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No4Cek.png)
+
+### Soal 5
+
+Supaya tetap bisa menghubungi Franky jika server EniesLobby rusak, maka buat Water7 sebagai DNS Slave untuk domain utama.
+
+Jawab :
+
+Di Water7 ditambahkan konfigurasi berikut pada file /etc/bind/named.config.local.
+```
+zone "franky.B06.com" {
+    type slave;
+    masters { 10.10.2.2; };
+    file "/var/lib/bind/franky.B06.com";
+};
+```
+Di EniesLobby ditambahkan konfigurasi berikut pada file /etc/bind/named.config.local pada bagian zone "franky.B06.com".
+```
+notify yes;
+also-notify { 10.10.2.3; };
+allow-transfer { 10.10.2.3; };
+```
+Kemudian dilakukan restart bind9 pada Water7 dan EniesLobby.
+
+Lalu dilakukan pengecekan apakah DNS Slave telah berhasil dibuat dengan cara,
+
+dilakukan stop bind pada Enies Lobby, dan dilakukan ping franky.B06.com pada client.
+
+![No5](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3BindStop.png)
+
+![No5](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No5Ping.png)
