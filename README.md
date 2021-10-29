@@ -73,7 +73,7 @@ iface eth0 inet static
 	gateway 10.10.2.1
 ```
 
-Lalu pada foosha jalankan command
+Lalu pada foosha dijalankan command
 ```
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.10.0.0/16
 ```
@@ -81,3 +81,15 @@ dan
 ```
 cat /etc/resolv.conf
 ```
+Akan diperoleh sebuah IP Adress yang akan digunakan untuk command selanjutnya.
+
+![No1](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No1.png)
+
+Di node-node lainnya, agar dapat terhubung ke internet, dijalankan command berikut dan digunakan IP yang diperoleh tadi.
+```
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+Selanjutnya dilakukan ping google.com untuk memastikan bahwa semua node dapat mengakses internet.
+
+![No1](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No1Ping.png)
