@@ -92,7 +92,7 @@ echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 Selanjutnya dilakukan ping google.com untuk memastikan bahwa semua node dapat mengakses internet.
 
-![No1](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No1Ping.png)
+![No1Ping](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No1Ping.png)
 
 ### Soal 2
 
@@ -113,7 +113,7 @@ mkdir /etc/bind/kaizoku
 ```
 Dan pada file /etc/bind/kaizoku/franky.B06.com, dibuat konfigurasi seperti berikut
 
-![No2](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Config.png)
+![No2Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Config.png)
 
 Line berikut digunakan untuk membuat alias
 ```
@@ -124,11 +124,11 @@ Dilakukan restart bind9 dan dilakukan setting nameserver pada client Loguetown d
 nano /etc/resolv.conf
 ```
 
-![No2](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Nameserver.png)
+![No2Nameserver](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Nameserver.png)
 
 setelah itu pada client Loguetown atau Alabasta dilakukan ping franky.B06.com dan www.franky.B06.com untuk memastikan domain berhasil dibuat.
 
-![No2](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Ping.png)
+![No2Ping](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Ping.png)
 
 ### Soal 3
 
@@ -136,13 +136,13 @@ Setelah itu buat subdomain super.franky.yyy.com dengan alias www.super.franky.yy
 
 Jawab : 
 
-Di EniesLobby ditambahkan konfigurasi berikut pada file /etc/bind/kaizoku/franky.B06.com,
+Di EniesLobby ditambahkan konfigurasi berikut pada file /etc/bind/kaizoku/franky.B06.com.
 
-![No3](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3Config.png)
+![No3Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3Config.png)
 
 Dilakukan restart bind9 dan setelah itu pada client Loguetown atau Alabasta dilakukan ping super.franky.B06.com dan www.super.franky.B06.com untuk memastikan domain berhasil dibuat. (setting nameserver telah dilakukan di soal sebelumnya)
 
-![No3](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3Ping.png)
+![No3Ping](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3Ping.png)
 
 ### Soal 4
 
@@ -163,13 +163,13 @@ cp /etc/bind/db.local /etc/bind/kaizoku/2.10.10.in-addr.arpa
 ```
 Dan pada file /etc/bind/kaizoku/2.10.10.in-addr.arpa ditambahkan konfigurasi berikut,
 
-![No4](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No4Config.png)
+![No4Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No4Config.png)
 
 Pada client, dilakukan command berikut untuk pengecekan apakah reverse domain sudah dibuat dengan benar.
 ```
 host -t PTR 10.10.2.4
 ```
-![No4](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No4Cek.png)
+![No4Cek](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No4Cek.png)
 
 ### Soal 5
 
@@ -197,6 +197,45 @@ Lalu dilakukan pengecekan apakah DNS Slave telah berhasil dibuat dengan cara,
 
 dilakukan stop bind pada Enies Lobby, dan dilakukan ping franky.B06.com pada client.
 
-![No5](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3BindStop.png)
+![No5BindStop](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No5BindStop.png)
 
-![No5](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No5Ping.png)
+![No5Ping](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No5Ping.png)
+
+### Soal 6
+
+Setelah itu terdapat subdomain mecha.franky.yyy.com dengan alias www.mecha.franky.yyy.com yang didelegasikan dari EniesLobby ke Water7 dengan IP menuju ke Skypie dalam folder sunnygo.
+
+Jawab :
+
+Di EniesLobby ditambahkan konfigurasi berikut pada file /etc/bind/kaizoku/franky.B06.com.
+
+![No6ConfigEnies](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No6ConfigEnies.png)
+
+Kemudian ditambahkan baris berikut pada file /etc/bind/named.conf.options pada EniesLobby.
+```
+allow-query{any;};
+```
+Di Water7 ditambahkan konfigurasi berikut pada file /etc/bind/named.config.local.
+```
+zone "mecha.franky.B06.com" {
+        type master;
+        file "/etc/bind/sunnygo/mecha.franky.B06.com";
+};
+```
+Kemudian ditambahkan baris berikut pada file /etc/bind/named.conf.options pada EniesLobby.
+```
+allow-query{any;};
+```
+Dibuat folder sunnygo.
+```
+mkdir /etc/bind/sunnygo
+```
+Dan pada file/etc/bind/sunnygo/mecha.franky.B06.com, dibuat konfigurasi seperti berikut.
+
+![No6ConfigWater7](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No6ConfigWater7.png)
+
+Dilakukan restart bind pada EniesLobby dan Water7.
+
+Dilakukan testing dengan cara ping ke domain mecha.franky.B06.com dan www.mecha.franky.B06.com pada client.
+
+![No6Ping](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No6Ping.png)
