@@ -143,3 +143,30 @@ Di EniesLobby ditambahkan konfigurasi berikut pada file /etc/bind/kaizoku/franky
 Dilakukan restart bind9 dan setelah itu pada client Loguetown atau Alabasta dilakukan ping super.franky.B06.com dan www.super.franky.B06.com untuk memastikan domain berhasil dibuat. (setting nameserver telah dilakukan di soal sebelumnya)
 
 ![No3](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3Ping.png)
+
+### Soal 4
+
+Buat juga reverse domain untuk domain utama.
+
+Jawab :
+
+Di EniesLobby ditambahkan konfigurasi berikut pada file /etc/bind/named.config.local.
+```
+zone "2.10.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/kaizoku/2.10.10.in-addr.arpa";
+};
+```
+Di-copy file db.local pada /etc/bind ke folder kaizoku yang dibuat sebelumnya.
+```
+cp /etc/bind/db.local /etc/bind/kaizoku/2.10.10.in-addr.arpa
+```
+Dan pada file /etc/bind/kaizoku/2.10.10.in-addr.arpa ditambahkan konfigurasi berikut,
+
+![No4](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No4Config.png)
+
+Pada client, dilakukan command berikut untuk pengecekan apakah reverse domain sudah dibuat dengan benar.
+```
+host -t PTR 10.10.2.4
+```
+![No4](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No4Cek.png)
