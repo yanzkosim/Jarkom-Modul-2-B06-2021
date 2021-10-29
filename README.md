@@ -12,7 +12,9 @@ EniesLobby akan dijadikan sebagai DNS Master, Water7 akan dijadikan DNS Slave, d
 Jawab
 
 Pertama dibuat topology sesuai yang terdapat pada soal
+
 ![Topology](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/Topology.png)
+
 Kemudian untuk setiap node diatur network configuration-nya seperti berikut,
 
 - Foosha
@@ -69,4 +71,13 @@ iface eth0 inet static
 	address 10.10.2.4
 	netmask 255.255.255.0
 	gateway 10.10.2.1
+```
+
+Lalu pada foosha jalankan command
+```
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.10.0.0/16
+```
+dan
+```
+cat /etc/resolv.conf
 ```
