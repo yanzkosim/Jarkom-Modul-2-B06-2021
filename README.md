@@ -119,7 +119,27 @@ Line berikut digunakan untuk membuat alias
 ```
 www             IN      CNAME   franky.B06.com.
 ```
-Dilakukan restart bind9 dan setelah itu pada client Loguetown atau Alabasta dilakukan ping franky.B06.com dan www.franky.B06.com untuk memastikan domain berhasil dibuat.
+Dilakukan restart bind9 dan dilakukan setting nameserver pada client Loguetown dan Alabasta
+```
+nano /etc/resolv.conf
+```
+
+![No2](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Nameserver.png)
+
+setelah itu pada client Loguetown atau Alabasta dilakukan ping franky.B06.com dan www.franky.B06.com untuk memastikan domain berhasil dibuat.
 
 ![No2](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Ping.png)
 
+### Soal 3
+
+Setelah itu buat subdomain super.franky.yyy.com dengan alias www.super.franky.yyy.com yang diatur DNS nya di EniesLobby dan mengarah ke Skypie.
+
+Jawab : 
+
+Di EniesLobby ditambahkan konfigurasi berikut pada file /etc/bind/kaizoku/franky.B06.com,
+
+![No3](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3Config.png)
+
+Dilakukan restart bind9 dan setelah itu pada client Loguetown atau Alabasta dilakukan ping super.franky.B06.com dan www.super.franky.B06.com untuk memastikan domain berhasil dibuat.
+
+![No3](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Ping.png)
