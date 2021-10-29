@@ -251,3 +251,327 @@ Pada file /etc/bind/sunnygo/mecha.franky.B06.com, ditambahkan konfigurasi sepert
 Dilakukan restart bind dan setelah itu pada client Loguetown atau Alabasta dilakukan ping general.mecha.franky.B06.com dan www.general.mecha.franky.B06.com untuk memastikan domain berhasil dibuat. (setting nameserver telah dilakukan di soal sebelumnya)
 
 ![No7Ping](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No7Ping.png)
+
+### Soal 8
+
+Dibuat konfigurasi Webserver untuk `www.franky.B06.com` dimana lokasi DocumentRoot nya adalah `/var/www/franky.B06.com`. 
+
+### Jawab
+
+Seperti penjelasan yang ada pada [Soal nomor 1](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021#soal-1), konfigurasi Webserver ini berada pada `Skypie` sehingga semua konfigurasi mulai dari nomor ini hingga nomor terakhir akan berada pada `Skypie`. Sebelum melakukan konfigurasi, maka *utility* yang dibutuhkan akan diunduh terlebih dahulu, yaitu `lynx` pada client dan `apache2`, `php`, `libapache2`, `unzip` dan `wget` pada webserver.
+
+Setelah *utility* berhasil diunduh, copy file `000-default.conf` di direktori `/etc/apache2/sites-available` ke `/etc/apache2/sites-available/franky.B06.com.conf` dengan command
+
+```
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/franky.B06.com.conf
+```
+
+Lalu file tersebut diedit dengan mengubah DocumentRoot menjadi `/var/www/franky.B06.com` dan menambahkan ServerName dan ServerAlias
+
+```
+DocumentRoot /var/www/franky.B06.com
+ServerName franky.B06.com
+ServerAlias www.franky.B06.com
+```
+
+![No8Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No8Config.png)
+
+Dalam proses ini, direktori `/var/www/franky.B06.com` belum ada, maka diunduh terlebih dahulu dari link yang telah disediakan, direname, lalu dipindah ke `/var/www/`
+
+```
+wget -P /root/ https://github.com/FeinardSlim/Praktikum-Modul-2-Jarkom/raw/main/franky.zip
+
+unzip /root/franky.zip -d /root/
+mv /root/franky /root/franky.B06.com
+mv /root/franky.B06.com /var/www/
+```
+
+Setelah konfigurasi telah selesai, enable site tersebut dengan command
+
+```
+a2ensite franky.B06.com
+```
+
+![No8Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No8Hasil.png)
+
+### Soal 9
+
+Url `www.franky.B06.com/index.php/home` dapat diakses dengan menggunakan url yang lebih pendek yaitu `www.franky.B06.com/home`.
+
+### Jawab
+
+Digunakan module rewrite untuk menulis ulang atau memanipulasi URL website secara dinamik pada server. Pertama jalankan command untuk menyalakan module rewrite pada apache2
+
+```
+a2enmod rewrite
+```
+
+Setelah itu buat file `.htaccess` pada `/var/www/franky.B06.com/`, lalu isi file `.htaccess` tersebut sebagai berikut
+
+```
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^\.]+)$ index.php/$1 [NC,L]
+```
+
+![No9htaccess](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No9htaccess.png)
+
+Agar file tersebut dapat dieksekusi, ditambahkan konfigurasi ke file `/etc/apache2/sites-available/franky.B06.com.conf` sebagai berikut
+
+```
+<Directory /var/www/franky.B06.com>
+	Options +FollowSymLinks -Multiviews
+	AllowOverride All
+</Directory>
+```
+
+![No9Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No9Config.png)
+
+![No9Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No9Hasil.gif)
+
+### Soal 10
+
+Membuat konfigurasi webserver untuk subdomain `www.super.franky.B06.com` dengan DocumentRoot yang berada pada `/var/www/super.franky.B06.com`
+
+### Jawab
+
+Hal yang perlu dilakukan pertama kali adalah mengunduh file pada link yang telah diberikan, direname, lalu dipindah ke `/var/www/`
+
+```
+wget -P /root/ https://github.com/FeinardSlim/Praktikum-Modul-2-Jarkom/raw/main/super.franky.zip
+
+unzip /root/franky.zip -d /root/
+mv /root/super.franky /root/super.franky.B06.com
+mv /root/franky.B06.com /var/www/
+```
+
+Setelah diunduh dan diipindah, copy file `000-default.conf` ke `super.franky.B06.com.conf`
+
+```
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/super.franky.B06.com.conf
+```
+
+Ubah DocumentRoot pada file tersebut lalu tambahkan ServerName dan ServerAlias
+
+```
+DocumentRoot /var/www/super.franky.B06.com
+ServerName super.franky.B06.com
+ServerAlias www.super.franky.B06.com
+```
+
+![No10Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No10Config.png)
+
+Agar dapat diakses, enable site tersebut
+
+```
+a2ensite super.franky.B06.com
+```
+
+![No10Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No10Hasil.png)
+
+### Soal 11
+
+Folder /public diatur agar hanya dapat melakukan directory listing.
+
+### Jawab
+
+Pada file `/etc/apache2/sites-available/super.franky.B06.com.conf`, ditambahi konfigurasi sebagai berikut agar direktori `/public` dapat melakukan directory listing
+
+```
+<Directory /var/www/super.franky.B06.com/public>
+	Options +Indexes
+</Directory>
+```
+
+Lalu agar direktori tersebut hanya bisa melakukan directory listing saja, ditambahi konfigurasi agar muncul Error Forbidden ketika dicoba untuk mengakses folder yang ada di dalam direktori `/public` tersebut
+
+```
+<Directory /var/www/super.franky.B06.com/public/*>
+	Options -Indexes
+</Directory>
+```
+
+![No11Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No11Config.png)
+
+![No11Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No11Hasil.gif)
+
+### Soal 12
+
+Mengubah tampilan Error 404 default dari apache2 menjadi custom Error 404 yang terdapat pada direktori `/var/www/super.franky.B06.com/error/`
+
+### Jawab
+
+Untuk mengubah tampilan error, ditambahkan konfigurasi *ErrorDocument* pada file konfigurasi `/etc/apache2/sites-available/super.franky.B06.com.conf`
+
+![No12Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No12Config.png)
+
+```
+ErrorDocument 404 /error/404.html
+```
+
+![No12Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No12Hasil.gif)
+
+### Soal 13
+
+Dibuatkan konfigurasi agar dapat mengakses `www.super.franky.B06.com/public/js` dengan membuka `www.super.franky.B06.com/js`
+
+### Jawab
+
+Digunakan Directory Alias untuk mempersimple URL tersebut.
+
+```
+Alias "/js" "/var/www/super.franky.B06.com/public/js"
+```
+
+Karena sebelumnya direktori js tidak dapat diakses, perlu diatur lagi dengan menambahkan
+
+```
+<Directory /var/www/super.franky.B06.com/public/js>
+    Options +Indexes
+</Directory>
+```
+
+![No13Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No13Config.png)
+
+![No13Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No13Hasil.gif)
+
+### Soal 14
+
+Diatur konfigurasi untuk website `www.general.mecha.franky.B06.com` agar hanya dapat diakses pada port 15000 dan 15500
+
+### Jawab
+
+Untuk mengakses port 15000 dan 15500, kedua port tersebut ditambahkan ke dalam `ports.conf`
+
+```
+Listen 15000
+Listen 15500
+```
+
+![No14Ports](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No14Ports.png)
+
+Setelah itu copy file `000-default.conf` ke `general.mecha.franky.B06.com.conf` dan ubah port VirtualHost menjadi 15000 dan 15500
+
+```
+<VirtualHost *:80>
+```
+
+menjadi 
+
+```
+<VirtualHost *:15000 *:15500>
+```
+![No14Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No14Config.png)
+
+Kemudian enable site tersebut 
+
+```
+a2ensite general.mecha.franky.B06.com
+```
+
+![No14Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No14Hasil.gif)
+
+### Soal 15
+
+Tambahkan authentikasi untuk mengakses web tersebut, dan atur DocumentRoot nya pada `/var/www/general.mecha.franky.B06`
+
+### Jawab
+
+Untuk menambahkan authentikasi, digunakan *htpasswd*. Pertama buat file `.htpasswd` pada direktori `/etc/apache2/`, lalu tuliskan hasil htpasswd dengan username **luffy** dan password **onepiece** ke dalam file `.htpasswd` tersebut.
+
+```
+touch /etc/apache2/.htpasswd
+htpasswd -nb luffy onepiece > /etc/apache2/.htpasswd
+```
+
+Ubah DocumentRoot dan tambahkan konfigurasi pada file `/etc/apache2/sites-available/general.mecha.franky.B06.com.conf`
+
+```
+DocumentRoot /var/www/general.mecha.franky.B06
+ServerName general.mecha.franky.B06.com
+ServerAlias www.general.mecha.franky.B06.com
+
+<Directory /var/www/general.mecha.franky.B06>
+	AuthType Basic
+	AuthName "Restricted Content"
+	AuthUserFile /etc/apache2/.htpasswd
+	Require valid-user
+</Directory>
+```
+
+![No15Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No15Config.png)
+
+![No15Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No15Hasil.gif)
+
+### Soal 16
+
+Jika mengakses IP Skypie, maka akan diarahkan ke `www.franky.B06.com`
+
+### Jawab
+
+Agar diarahkan hanya jika mengakses IP Skypie saja, maka digunakan modul rewrite, namun jika ingin menjadikan `www.franky.B06.com` menjadi site default, digunakan *Redirect*. 
+
+Pertama tambahkan konfigurasi agar `.htacces` dapat digunakan pada file `000-default.conf`
+
+```
+<Directory /var/www/html>
+    Options +FollowSymLinks -Multiviews
+    AllowOverride All
+</Directory>
+```
+
+![No16Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No16Config.png)
+
+Lalu buat file `.htaccess` pada direktori default yaitu `/var/www/html` dan diisi seperti ini
+
+```
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_HOST} ^10\.10\.2\.4$
+RewriteRule ^(.*)$ http://franky.b06.com/$1 [L,R=301]
+```
+
+![No16htaccess](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No16htaccess.png)
+
+Keterangan :
+
+Jika HTTP Host yang diterima adalah IP Skypie (10.10.2.4), maka url nya ditulis ulang menjadi `http://franky.b06.com`
+
+![No16Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No16Hasil.gif)
+
+### Soal 17
+
+Setiap file dengan format gambar akan dialihkan ke `franky.png` jika nama file terebut memiliki substring ***franky***.
+
+### Jawab
+
+Untuk mengalihkan ke `franky.png` digunakan module rewrite yaitu dengan membuat dan mengisi file `/var/www/super.franky.B06.com/public/images/.htaccess` sebagai berikut
+
+```
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (.*)franky(.*)(png|jpg) http://super.franky.b06.com/public/images/franky.png
+```
+
+![No17htaccess](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No17htaccess.png)
+
+Lalu tambahkan konfigurasi pada `/etc/apache2/sites-available/super.franky.B06.com.conf` agar mod rewritenya dapat digunakan dan direktori imagesnya dapat diakses
+
+```
+<Directory /var/www/super.franky.B06.com/public/images>
+    Options +FollowSymLinks -Multiviews +Indexes
+    AllowOverride All
+</Directory>
+```
+
+![No17Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No17Config.png)
+
+![No17Hasil](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No17Hasil.gif)
+
+## Catatan
+
+Selalu jalankan command berikut mulai dari nomor 8 hingga nomor terakhir apabila telah dilakukan konfigurasi
+
+```
+service apache2 restart
+```
