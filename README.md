@@ -230,12 +230,24 @@ Dibuat folder sunnygo.
 ```
 mkdir /etc/bind/sunnygo
 ```
-Dan pada file/etc/bind/sunnygo/mecha.franky.B06.com, dibuat konfigurasi seperti berikut.
+Dan pada file /etc/bind/sunnygo/mecha.franky.B06.com, dibuat konfigurasi seperti berikut.
 
 ![No6ConfigWater7](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No6ConfigWater7.png)
 
-Dilakukan restart bind pada EniesLobby dan Water7.
-
-Dilakukan testing dengan cara ping ke domain mecha.franky.B06.com dan www.mecha.franky.B06.com pada client.
+Dilakukan restart bind pada EniesLobby dan Water7 dan dilakukan testing dengan cara ping ke domain mecha.franky.B06.com dan www.mecha.franky.B06.com pada client.
 
 ![No6Ping](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No6Ping.png)
+
+### Soal 7
+
+Untuk memperlancar komunikasi Luffy dan rekannya, dibuatkan subdomain melalui Water7 dengan nama general.mecha.franky.yyy.com dengan alias www.general.mecha.franky.yyy.com yang mengarah ke Skypie.
+
+Jawab :
+
+Pada file /etc/bind/sunnygo/mecha.franky.B06.com, ditambahkan konfigurasi seperti berikut.
+
+![No7Config](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No7Config.png)
+
+Dilakukan restart bind dan setelah itu pada client Loguetown atau Alabasta dilakukan ping general.mecha.franky.B06.com dan www.general.mecha.franky.B06.com untuk memastikan domain berhasil dibuat. (setting nameserver telah dilakukan di soal sebelumnya)
+
+![No7Ping](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No7Ping.png)
