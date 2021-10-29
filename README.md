@@ -140,6 +140,6 @@ Di EniesLobby ditambahkan konfigurasi berikut pada file /etc/bind/kaizoku/franky
 
 ![No3](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3Config.png)
 
-Dilakukan restart bind9 dan setelah itu pada client Loguetown atau Alabasta dilakukan ping super.franky.B06.com dan www.super.franky.B06.com untuk memastikan domain berhasil dibuat.
+Dilakukan restart bind9 dan setelah itu pada client Loguetown atau Alabasta dilakukan ping super.franky.B06.com dan www.super.franky.B06.com untuk memastikan domain berhasil dibuat. (setting nameserver telah dilakukan di soal sebelumnya)
 
-![No3](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No2Ping.png)
+![No3](https://github.com/yanzkosim/Jarkom-Modul-2-B06-2021/blob/main/Screenshot/No3Ping.png)
